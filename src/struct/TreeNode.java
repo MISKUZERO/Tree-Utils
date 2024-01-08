@@ -2,16 +2,18 @@ package struct;
 
 import java.util.*;
 
-public abstract class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
+public class TreeNode {
 
-    TreeNode(int val) {
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+
+    public TreeNode(int val) {
         this.val = val;
     }
 
-    public boolean add(TreeNode node) {
+    public boolean add(int val) {
+        TreeNode node = new TreeNode(val);
         final int value = node.val;
         TreeNode tmp = this;
         while (true)
@@ -32,8 +34,6 @@ public abstract class TreeNode {
             else
                 return false;
     }
-
-    public abstract boolean del(TreeNode node);
 
     public static List<Integer> preTraversal(TreeNode root) {
         ArrayList<Integer> res = new ArrayList<>();
