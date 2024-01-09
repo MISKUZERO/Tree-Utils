@@ -58,22 +58,19 @@ public class TreeUtils {
         return Math.max(left, right) + 1;
     }
 
-    @NotNull
-    public static boolean isAVLTree(TreeNode node) {
-        ArrayDeque<TreeNode> deque = new ArrayDeque<>();
-        deque.add(node);
-        TreeNode temp;
-        while ((temp = deque.poll()) != null) {
-            TreeNode lNode = temp.left;
-            TreeNode rNode = temp.right;
-            if (Math.abs(TreeUtils.getMaxDepth(lNode) - TreeUtils.getMaxDepth(rNode)) > 1)
-                return false;
-            if (lNode != null)
-                deque.add(lNode);
-            if (rNode != null)
-                deque.add(rNode);
-        }
-        return true;
+    private static int getMaxDepth0(TreeNode node) {
+        if (node == null)
+            return 0;
+        int left = getMaxDepth0(node.left);
+        int right = left == -1 ? -1 : getMaxDepth0(node.right);//剪枝
+        if (left == -1 || right == -1 || Math.abs(left - right) > 1)
+            return -1;
+        else
+            return Math.max(left, right) + 1;
+    }
+
+    public static boolean isAVLTree(TreeNode root) {
+        return getMaxDepth0(root) >= 0;
     }
 
     public static void main(String[] args) {
