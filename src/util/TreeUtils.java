@@ -1,53 +1,62 @@
 package util;
 
-import com.sun.istack.internal.NotNull;
 import struct.TreeNode;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class TreeUtils {
 
-    @NotNull
-    @SuppressWarnings("all")
-    public static Object[] resolving(TreeNode node) {
-        ArrayDeque<TreeNode> eleDeque = new ArrayDeque<>();
-        eleDeque.add(node);
-        ArrayList<Integer> valList = new ArrayList<>();
-        int count = 1;
-        TreeNode empty = new TreeNode();
-        TreeNode block = new TreeNode();
-        eleDeque.add(block);
-        StringBuilder posBuilder = new StringBuilder();
-        TreeNode ele;
-        while (count != 0) {
-            if ((ele = eleDeque.poll()) == block) {
-                eleDeque.add(block);
-                posBuilder.append("\n");
-                continue;
+    public static StringBuilder resolving(TreeNode node) {
+        StringBuilder result = new StringBuilder();
+        Queue<TreeNode> eleQueue = new LinkedList<>();
+        Queue<Integer> posQueue = new LinkedList<>();
+        eleQueue.offer(node);
+        posQueue.offer(1);
+        int size;
+        int emptyCount = 1 << getMaxDepth(node);
+        int curLayerCapacity = 1;
+        String emptyUnit = "-";
+        while ((size = eleQueue.size()) > 0) {
+            result.append(emptyUnit);
+            emptyCount >>= 1;
+            int curUnit = 1;
+            while (size-- > 0) {
+                TreeNode temp = eleQueue.poll();
+                int pos = posQueue.remove();
+                //NULL值打印
+                while (curUnit++ != pos) {
+                    for (int j = 1; j < emptyCount; j++) result.append(emptyUnit);
+                    result.append("+");
+                    for (int j = 1; j < emptyCount + 1; j++) result.append(emptyUnit);
+                }
+                //正常打印
+                for (int i = 1; i < emptyCount; i++) result.append(emptyUnit);
+                if (pos > 9)
+                    result.append("@");
+                else
+                    result.append(pos);
+                for (int i = 1; i < emptyCount + 1; i++) result.append(emptyUnit);
+
+                if (temp.left != null) {
+                    eleQueue.offer(temp.left);
+                    posQueue.offer((pos << 1) - 1);
+                }
+                if (temp.right != null) {
+                    eleQueue.offer(temp.right);
+                    posQueue.offer(pos << 1);
+                }
             }
-            if (ele == empty)
-                posBuilder.append(0);
-            else {
-                posBuilder.append(1);
-                valList.add(ele.val);
-                count--;
+            //NULL值打印（补充）
+            while (curUnit++ <= curLayerCapacity) {
+                for (int j = 1; j < emptyCount; j++) result.append(emptyUnit);
+                result.append("+");
+                for (int j = 1; j < emptyCount + 1; j++) result.append(emptyUnit);
             }
-            if (ele.left == null)
-                eleDeque.add(empty);
-            else {
-                eleDeque.add(ele.left);
-                count++;
-            }
-            if (ele.right == null)
-                eleDeque.add(empty);
-            else {
-                eleDeque.add(ele.right);
-                count++;
-            }
+            curLayerCapacity <<= 1;
+            result.append("\n");
         }
-        while (eleDeque.poll() != block) posBuilder.append(0);
-        return new Object[]{posBuilder, valList};
+        return result;
     }
 
     public static int getMaxDepth(TreeNode node) {
@@ -76,16 +85,15 @@ public class TreeUtils {
     public static void main(String[] args) {
         TreeNode t = new TreeNode();
         System.out.print("[0, ");
-        for (int i = 0; i < 10; i++) {
-            int num = (int) (Math.random() * 10) - 5;
+        for (int i = 0; i < 20; i++) {
+            int num = (int) (Math.random() * 20) - 10;
             if (t.add(num))
                 System.out.print(num + ", ");
         }
         System.out.println("\b\b]");
-
-        Object[] res = TreeUtils.resolving(t);
-        System.out.println(res[0]);
-        System.out.println(res[1]);
+        System.out.println("========================================================================================================================================");
+        System.out.print(TreeUtils.resolving(t));
+        System.out.println("========================================================================================================================================");
         System.out.println(TreeUtils.getMaxDepth(t));
         System.out.println(TreeUtils.isAVLTree(t));
 
