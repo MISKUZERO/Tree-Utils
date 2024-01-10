@@ -14,75 +14,91 @@ public class TreeUtils {
         eleQueue.offer(node);
         posQueue.offer(1);
         int size;
-        int emptyCount = 1 << getMaxDepth(node);
+        int edgeUnitCount = 1 << (getMaxDepth(node) - 1);
         int curLayerCapacity = 1;
         String emptyUnit = " ";
-        String branchUnit = "-";
+        String branchUnit = "_";
         while ((size = eleQueue.size()) > 0) {
             StringBuilder nextLine = new StringBuilder();
-            result.append("!");
-            nextLine.append("!");
-            emptyCount >>= 1;
-            int curUnit = 1;
+            result.append(emptyUnit);
+            nextLine.append(emptyUnit);
+            edgeUnitCount >>= 1;
+            int curPos = 1;
             while (size-- > 0) {
                 TreeNode temp = eleQueue.poll();
-                int pos = posQueue.remove();
+                int desPos = posQueue.remove();
                 //NULL值打印
-                while (curUnit++ != pos) {
-                    for (int j = 1; j < emptyCount; j++) {
-                        result.append(emptyUnit);
-                        nextLine.append(emptyUnit);
-                    }
-                    result.append("x");
-                    nextLine.append(emptyUnit);
-                    for (int j = 1; j < emptyCount + 1; j++) {
-                        result.append(emptyUnit);
-                        nextLine.append(emptyUnit);
-                    }
-                }
-                //正常打印
-                for (int i = 1; i < emptyCount; i++) {
+                while (curPos++ != desPos)
+                    printNULL(result, (edgeUnitCount << 1) - 1, nextLine);
+                //正常值打印
+                for (int i = 0; i < edgeUnitCount; i++) {
                     result.append(emptyUnit);
                     nextLine.append(emptyUnit);
                 }
-                if (pos > 9)
+                if (temp.left == null)
+                    for (int i = 1; i < edgeUnitCount; i++) {
+                        result.append(emptyUnit);
+                        nextLine.append(emptyUnit);
+                    }
+                else
+                    for (int i = 1; i < edgeUnitCount; i++) {
+                        result.append(emptyUnit);
+                        nextLine.append(branchUnit);
+                    }
+                if (desPos > 9)
                     nextLine.append("@");
                 else
-                    nextLine.append(pos);
+                    nextLine.append(desPos);
                 result.append("|");
-                for (int i = 1; i < emptyCount + 1; i++) {
+                if (temp.right == null)
+                    for (int i = 1; i < edgeUnitCount; i++) {
+                        result.append(emptyUnit);
+                        nextLine.append(emptyUnit);
+                    }
+                else
+                    for (int i = 1; i < edgeUnitCount; i++) {
+                        result.append(emptyUnit);
+                        nextLine.append(branchUnit);
+                    }
+                for (int i = 0; i < edgeUnitCount; i++) {
                     result.append(emptyUnit);
                     nextLine.append(emptyUnit);
                 }
-
+                result.append(emptyUnit);
+                nextLine.append(emptyUnit);
+                //添加下一层节点
                 if (temp.left != null) {
                     eleQueue.offer(temp.left);
-                    posQueue.offer((pos << 1) - 1);
+                    posQueue.offer((desPos << 1) - 1);
                 }
                 if (temp.right != null) {
                     eleQueue.offer(temp.right);
-                    posQueue.offer(pos << 1);
+                    posQueue.offer(desPos << 1);
                 }
             }
             //NULL值打印（补充）
-            while (curUnit++ <= curLayerCapacity) {
-                for (int j = 1; j < emptyCount; j++) {
-                    result.append(emptyUnit);
-                    nextLine.append(emptyUnit);
-                }
-                result.append("x");
-                nextLine.append(emptyUnit);
-                for (int j = 1; j < emptyCount + 1; j++) {
-                    result.append(emptyUnit);
-                    nextLine.append(emptyUnit);
-                }
-            }
-            result.append("\n");
-            //第二行打印
-            result.append(nextLine).append("\n");
+            while (curPos++ <= curLayerCapacity)
+                printNULL(result, (edgeUnitCount << 1) - 1, nextLine);
+            //打印下一行
+            result.append("\n").append(nextLine).append("\n");
             curLayerCapacity <<= 1;
         }
         return result;
+    }
+
+    private static void printNULL(StringBuilder result, int edgeUnitCount, StringBuilder nextLine) {
+        for (int i = 0; i < edgeUnitCount; i++) {
+            result.append(" ");
+            nextLine.append(" ");
+        }
+        result.append(" ");
+        nextLine.append(".");//NULL值位置
+        for (int i = 0; i < edgeUnitCount; i++) {
+            result.append(" ");
+            nextLine.append(" ");
+        }
+        result.append(" ");
+        nextLine.append(" ");
     }
 
     public static int getMaxDepth(TreeNode node) {
