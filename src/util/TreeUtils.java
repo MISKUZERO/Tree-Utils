@@ -14,7 +14,7 @@ public class TreeUtils {
         eleQueue.offer(node);
         posQueue.offer(1);
         int size;
-        int edgeUnitCount = 1 << (getMaxDepth(node) - 1);
+        int edgeUnitCount = 1 << getMaxDepth(node);
         int curLayerCapacity = 1;
         String emptyUnit = " ";
         String branchUnit = "_";
@@ -29,19 +29,20 @@ public class TreeUtils {
                 int desPos = posQueue.remove();
                 //NULL值打印
                 while (curPos++ != desPos)
-                    printNULL(result, (edgeUnitCount << 1) - 1, nextLine);
+                    printNULL(result, nextLine, edgeUnitCount - 1);
                 //正常值打印
-                for (int i = 0; i < edgeUnitCount; i++) {
+                int halfEdgeUnitCount = edgeUnitCount >> 1;
+                for (int i = 0; i < halfEdgeUnitCount; i++) {
                     result.append(emptyUnit);
                     nextLine.append(emptyUnit);
                 }
                 if (temp.left == null)
-                    for (int i = 1; i < edgeUnitCount; i++) {
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
                         result.append(emptyUnit);
                         nextLine.append(emptyUnit);
                     }
                 else
-                    for (int i = 1; i < edgeUnitCount; i++) {
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
                         result.append(emptyUnit);
                         nextLine.append(branchUnit);
                     }
@@ -51,16 +52,16 @@ public class TreeUtils {
                     nextLine.append(desPos);
                 result.append("|");
                 if (temp.right == null)
-                    for (int i = 1; i < edgeUnitCount; i++) {
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
                         result.append(emptyUnit);
                         nextLine.append(emptyUnit);
                     }
                 else
-                    for (int i = 1; i < edgeUnitCount; i++) {
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
                         result.append(emptyUnit);
                         nextLine.append(branchUnit);
                     }
-                for (int i = 0; i < edgeUnitCount; i++) {
+                for (int i = 0; i < halfEdgeUnitCount; i++) {
                     result.append(emptyUnit);
                     nextLine.append(emptyUnit);
                 }
@@ -78,7 +79,7 @@ public class TreeUtils {
             }
             //NULL值打印（补充）
             while (curPos++ <= curLayerCapacity)
-                printNULL(result, (edgeUnitCount << 1) - 1, nextLine);
+                printNULL(result, nextLine, edgeUnitCount - 1);
             //打印下一行
             result.append("\n").append(nextLine).append("\n");
             curLayerCapacity <<= 1;
@@ -86,7 +87,7 @@ public class TreeUtils {
         return result;
     }
 
-    private static void printNULL(StringBuilder result, int edgeUnitCount, StringBuilder nextLine) {
+    private static void printNULL(StringBuilder result, StringBuilder nextLine, int edgeUnitCount) {
         for (int i = 0; i < edgeUnitCount; i++) {
             result.append(" ");
             nextLine.append(" ");
