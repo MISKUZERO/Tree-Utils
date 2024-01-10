@@ -7,7 +7,8 @@ import java.util.Queue;
 
 public class TreeUtils {
 
-    private static final String FILL_UNIT = ".";
+    private static final String FILL_UNIT = " ";
+    private static final String NULL_UNIT = ".";
 
     public static StringBuilder resolving(TreeNode node) {
         StringBuilder result = new StringBuilder();
@@ -57,10 +58,14 @@ public class TreeUtils {
                         nextLine.append(FILL_UNIT);
                     }
                 //打印中央部分
-                boolean exUnit = false;
-                if ((desPos & 1) == 0)//目标位置为偶数则是右子树
+                boolean exUnit = false, reqUnit = false;
+                if ((desPos & 1) == 0) {//目标位置为偶数则是右子树
+                    if (halfEdgeUnitCount > 0) {
+                        result.append("\b");
+                        reqUnit = true;
+                    }
                     result.append("\\");
-                else {
+                } else {
                     if (halfEdgeUnitCount > 0) {
                         result.append(FILL_UNIT);
                         exUnit = true;
@@ -97,6 +102,9 @@ public class TreeUtils {
                 }
                 result.append(FILL_UNIT);
                 nextLine.append(FILL_UNIT);
+                //修正
+                if (reqUnit)
+                    result.append(FILL_UNIT);
                 if (exUnit)
                     result.append("\b");
                 //添加下一层节点
@@ -125,7 +133,7 @@ public class TreeUtils {
             nextLine.append(FILL_UNIT);
         }
         result.append(FILL_UNIT);
-        nextLine.append("+");//NULL值位置
+        nextLine.append(NULL_UNIT);//NULL值位置
         for (int i = 0; i < edgeUnitCount; i++) {
             result.append(FILL_UNIT);
             nextLine.append(FILL_UNIT);
