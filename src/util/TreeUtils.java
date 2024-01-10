@@ -20,8 +20,8 @@ public class TreeUtils {
         String branchUnit = "-";
         while ((size = eleQueue.size()) > 0) {
             StringBuilder nextLine = new StringBuilder();
-            result.append(emptyUnit);
-            nextLine.append(emptyUnit);
+            result.append("!");
+            nextLine.append("!");
             emptyCount >>= 1;
             int curUnit = 1;
             while (size-- > 0) {
@@ -46,13 +46,10 @@ public class TreeUtils {
                     nextLine.append(emptyUnit);
                 }
                 if (pos > 9)
-                    result.append("@");
+                    nextLine.append("@");
                 else
-                    result.append(pos);
-                if (temp.left == null && temp.right == null)
-                    nextLine.append(emptyUnit);
-                else
-                    nextLine.append("|");
+                    nextLine.append(pos);
+                result.append("|");
                 for (int i = 1; i < emptyCount + 1; i++) {
                     result.append(emptyUnit);
                     nextLine.append(emptyUnit);
