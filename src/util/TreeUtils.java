@@ -16,9 +16,12 @@ public class TreeUtils {
         int size;
         int emptyCount = 1 << getMaxDepth(node);
         int curLayerCapacity = 1;
-        String emptyUnit = "-";
+        String emptyUnit = " ";
+        String branchUnit = "-";
         while ((size = eleQueue.size()) > 0) {
+            StringBuilder nextLine = new StringBuilder();
             result.append(emptyUnit);
+            nextLine.append(emptyUnit);
             emptyCount >>= 1;
             int curUnit = 1;
             while (size-- > 0) {
@@ -26,17 +29,34 @@ public class TreeUtils {
                 int pos = posQueue.remove();
                 //NULL值打印
                 while (curUnit++ != pos) {
-                    for (int j = 1; j < emptyCount; j++) result.append(emptyUnit);
-                    result.append("+");
-                    for (int j = 1; j < emptyCount + 1; j++) result.append(emptyUnit);
+                    for (int j = 1; j < emptyCount; j++) {
+                        result.append(emptyUnit);
+                        nextLine.append(emptyUnit);
+                    }
+                    result.append("x");
+                    nextLine.append(emptyUnit);
+                    for (int j = 1; j < emptyCount + 1; j++) {
+                        result.append(emptyUnit);
+                        nextLine.append(emptyUnit);
+                    }
                 }
                 //正常打印
-                for (int i = 1; i < emptyCount; i++) result.append(emptyUnit);
+                for (int i = 1; i < emptyCount; i++) {
+                    result.append(emptyUnit);
+                    nextLine.append(emptyUnit);
+                }
                 if (pos > 9)
                     result.append("@");
                 else
                     result.append(pos);
-                for (int i = 1; i < emptyCount + 1; i++) result.append(emptyUnit);
+                if (temp.left == null && temp.right == null)
+                    nextLine.append(emptyUnit);
+                else
+                    nextLine.append("|");
+                for (int i = 1; i < emptyCount + 1; i++) {
+                    result.append(emptyUnit);
+                    nextLine.append(emptyUnit);
+                }
 
                 if (temp.left != null) {
                     eleQueue.offer(temp.left);
@@ -49,12 +69,21 @@ public class TreeUtils {
             }
             //NULL值打印（补充）
             while (curUnit++ <= curLayerCapacity) {
-                for (int j = 1; j < emptyCount; j++) result.append(emptyUnit);
-                result.append("+");
-                for (int j = 1; j < emptyCount + 1; j++) result.append(emptyUnit);
+                for (int j = 1; j < emptyCount; j++) {
+                    result.append(emptyUnit);
+                    nextLine.append(emptyUnit);
+                }
+                result.append("x");
+                nextLine.append(emptyUnit);
+                for (int j = 1; j < emptyCount + 1; j++) {
+                    result.append(emptyUnit);
+                    nextLine.append(emptyUnit);
+                }
             }
-            curLayerCapacity <<= 1;
             result.append("\n");
+            //第二行打印
+            result.append(nextLine).append("\n");
+            curLayerCapacity <<= 1;
         }
         return result;
     }
