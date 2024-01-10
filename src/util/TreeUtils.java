@@ -34,12 +34,10 @@ public class TreeUtils {
                 //正常值打印
                 int halfEdgeUnitCount = edgeUnitCount >> 1;
                 //打印左半部分
-                //填充
                 for (int i = 0; i < halfEdgeUnitCount; i++) {
                     result.append(FILL_UNIT);
                     nextLine.append(FILL_UNIT);
                 }
-                //打印树枝
                 for (int i = 1; i < halfEdgeUnitCount; i++) {
                     result.append(FILL_UNIT);
                     nextLine.append(FILL_UNIT);
@@ -68,7 +66,6 @@ public class TreeUtils {
                     result.append(FILL_UNIT);
                     nextLine.append(FILL_UNIT);
                 }
-                //填充
                 for (int i = 0; i < halfEdgeUnitCount; i++) {
                     result.append(FILL_UNIT);
                     nextLine.append(FILL_UNIT);
@@ -95,14 +92,24 @@ public class TreeUtils {
                 printNULL(result, nextLine, edgeUnitCount - 1);
             //换行调整树枝斜率
             if (edgeUnitCount > 4) {
-                int count = (edgeUnitCount >> 1) - 1;
+                int count = edgeUnitCount >> 3;
                 if (curLayerCapacity != 1)
-                    for (int i = 2; i < count; i++) result.append("\n");
+                    for (int i = 0; i < count && i != 3; i++) {
+                        result.append("\n");
+                    }
                 count >>= 1;
-                for (int i = 2; i < count; i++) nextLine.append("\n");
+                if (edgeUnitCount >> 1 > 4)
+                    for (int i = 0; i < count && i != 3; i++) {
+                        nextLine.append("\n");
+                    }
             }
+            //删除起始行
+            if (curLayerCapacity == 1)
+                result = new StringBuilder();
+            else
+                result.append("\n");
             //打印下一行
-            result.append("\n").append(nextLine).append("\n");
+            result.append(nextLine).append("\n");
             curLayerCapacity <<= 1;
         }
         return result;
