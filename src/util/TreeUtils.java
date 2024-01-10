@@ -40,35 +40,22 @@ public class TreeUtils {
                     nextLine.append(FILL_UNIT);
                 }
                 //打印树枝
-                if (temp.left == null)
-                    for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(FILL_UNIT);
-                        nextLine.append(FILL_UNIT);
-                    }
-                else if (halfEdgeUnitCount > 2) {
+                for (int i = 1; i < halfEdgeUnitCount; i++) {
                     result.append(FILL_UNIT);
                     nextLine.append(FILL_UNIT);
-                    for (int i = 2; i < halfEdgeUnitCount; i++) {
-                        result.append(FILL_UNIT);
-                        nextLine.append("_");
-                    }
-                } else
-                    for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(FILL_UNIT);
-                        nextLine.append(FILL_UNIT);
-                    }
+                }
                 //打印中央部分
-                boolean exUnit = false, reqUnit = false;
+                int exUnit = 0, reqUnit = 0;
                 if ((desPos & 1) == 0) {//目标位置为偶数则是右子树
-                    if (halfEdgeUnitCount > 0) {
+                    while (reqUnit < halfEdgeUnitCount) {
                         result.append("\b");
-                        reqUnit = true;
+                        reqUnit++;
                     }
                     result.append("\\");
                 } else {
-                    if (halfEdgeUnitCount > 0) {
+                    while (exUnit < halfEdgeUnitCount) {
                         result.append(FILL_UNIT);
-                        exUnit = true;
+                        exUnit++;
                     }
                     result.append("/");
                 }
@@ -77,24 +64,10 @@ public class TreeUtils {
                 else
                     nextLine.append(desPos);
                 //打印右半部分
-                //打印树枝
-                if (temp.right == null)
-                    for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(FILL_UNIT);
-                        nextLine.append(FILL_UNIT);
-                    }
-                else if (halfEdgeUnitCount > 2) {
-                    for (int i = 2; i < halfEdgeUnitCount; i++) {
-                        result.append(FILL_UNIT);
-                        nextLine.append("_");
-                    }
+                for (int i = 1; i < halfEdgeUnitCount; i++) {
                     result.append(FILL_UNIT);
                     nextLine.append(FILL_UNIT);
-                } else
-                    for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(FILL_UNIT);
-                        nextLine.append(FILL_UNIT);
-                    }
+                }
                 //填充
                 for (int i = 0; i < halfEdgeUnitCount; i++) {
                     result.append(FILL_UNIT);
@@ -103,9 +76,9 @@ public class TreeUtils {
                 result.append(FILL_UNIT);
                 nextLine.append(FILL_UNIT);
                 //修正
-                if (reqUnit)
+                while (reqUnit-- > 0)
                     result.append(FILL_UNIT);
-                if (exUnit)
+                while (exUnit-- > 0)
                     result.append("\b");
                 //添加下一层节点
                 if (temp.left != null) {
@@ -120,6 +93,14 @@ public class TreeUtils {
             //NULL值打印（补充）
             while (curPos++ <= curLayerCapacity)
                 printNULL(result, nextLine, edgeUnitCount - 1);
+            //换行调整树枝斜率
+            if (edgeUnitCount > 4) {
+                int count = (edgeUnitCount >> 1) - 1;
+                if (curLayerCapacity != 1)
+                    for (int i = 2; i < count; i++) result.append("\n");
+                count >>= 1;
+                for (int i = 2; i < count; i++) nextLine.append("\n");
+            }
             //打印下一行
             result.append("\n").append(nextLine).append("\n");
             curLayerCapacity <<= 1;
