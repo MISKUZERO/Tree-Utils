@@ -10,7 +10,127 @@ public class TreeUtils {
     private static final String FILL_UNIT = " ";
     private static final String NULL_UNIT = ".";
 
+    @SuppressWarnings("all")
     public static StringBuilder resolving(TreeNode node) {
+        StringBuilder result = new StringBuilder();
+        Queue<TreeNode> eleQueue = new LinkedList<>();
+        Queue<Integer> posQueue = new LinkedList<>();
+        eleQueue.offer(node);
+        posQueue.offer(1);
+        int size;
+        int edgeUnitCount = 1 << getMaxDepth(node);
+        int curLayerCapacity = 1;
+        while ((size = eleQueue.size()) > 0) {
+            StringBuilder nextLine = new StringBuilder();
+            result.append(FILL_UNIT);
+            nextLine.append(FILL_UNIT);
+            edgeUnitCount >>= 1;
+            int curPos = 1;
+            while (size-- > 0) {
+                TreeNode temp = eleQueue.poll();
+                int desPos = posQueue.remove();
+                //NULL值打印
+                while (curPos++ != desPos)
+                    printNULL(result, nextLine, edgeUnitCount - 1);
+                //正常值打印
+                int halfEdgeUnitCount = edgeUnitCount >> 1;
+                //打印左半部分
+                //填充
+                for (int i = 0; i < halfEdgeUnitCount; i++) {
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
+                }
+                //打印树枝
+                if (temp.left == null)
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
+                    }
+                else if (halfEdgeUnitCount > 2) {
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
+                    for (int i = 2; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append("_");
+                    }
+                } else
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
+                    }
+                //打印中央部分
+                boolean exUnit = false, reqUnit = false;
+                if ((desPos & 1) == 0) {//目标位置为偶数则是右子树
+                    if (halfEdgeUnitCount > 0) {
+                        result.append("\b");
+                        reqUnit = true;
+                    }
+                    result.append("\\");
+                } else {
+                    if (halfEdgeUnitCount > 0) {
+                        result.append(FILL_UNIT);
+                        exUnit = true;
+                    }
+                    result.append("/");
+                }
+                if (desPos > 9)
+                    nextLine.append("@");
+                else
+                    nextLine.append(desPos);
+                //打印右半部分
+                //打印树枝
+                if (temp.right == null)
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
+                    }
+                else if (halfEdgeUnitCount > 2) {
+                    for (int i = 2; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append("_");
+                    }
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
+                } else
+                    for (int i = 1; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
+                    }
+                //填充
+                for (int i = 0; i < halfEdgeUnitCount; i++) {
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
+                }
+                result.append(FILL_UNIT);
+                nextLine.append(FILL_UNIT);
+                //修正
+                if (reqUnit)
+                    result.append(FILL_UNIT);
+                if (exUnit)
+                    result.append("\b");
+                //添加下一层节点
+                if (temp.left != null) {
+                    eleQueue.offer(temp.left);
+                    posQueue.offer((desPos << 1) - 1);
+                }
+                if (temp.right != null) {
+                    eleQueue.offer(temp.right);
+                    posQueue.offer(desPos << 1);
+                }
+            }
+            //NULL值打印（补充）
+            while (curPos++ <= curLayerCapacity)
+                printNULL(result, nextLine, edgeUnitCount - 1);
+            //打印下一行
+            result.append("\n").append(nextLine).append("\n");
+            curLayerCapacity <<= 1;
+        }
+        return result;
+    }
+
+
+    @SuppressWarnings("all")
+    public static StringBuilder resolving2(TreeNode node) {
         StringBuilder result = new StringBuilder();
         Queue<TreeNode> eleQueue = new LinkedList<>();
         Queue<Integer> posQueue = new LinkedList<>();
@@ -164,6 +284,8 @@ public class TreeUtils {
         System.out.println("\b\b]");
         System.out.println("========================================================================================================================================");
         System.out.print(TreeUtils.resolving(t));
+        System.out.println("========================================================================================================================================");
+        System.out.print(TreeUtils.resolving2(t));
         System.out.println("========================================================================================================================================");
         System.out.println(TreeUtils.getMaxDepth(t));
         System.out.println(TreeUtils.isAVLTree(t));
