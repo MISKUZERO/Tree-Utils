@@ -7,6 +7,8 @@ import java.util.Queue;
 
 public class TreeUtils {
 
+    private static final String FILL_UNIT = ".";
+
     public static StringBuilder resolving(TreeNode node) {
         StringBuilder result = new StringBuilder();
         Queue<TreeNode> eleQueue = new LinkedList<>();
@@ -16,12 +18,10 @@ public class TreeUtils {
         int size;
         int edgeUnitCount = 1 << getMaxDepth(node);
         int curLayerCapacity = 1;
-        String emptyUnit = " ";
-        String branchUnit = "_";
         while ((size = eleQueue.size()) > 0) {
             StringBuilder nextLine = new StringBuilder();
-            result.append(emptyUnit);
-            nextLine.append(emptyUnit);
+            result.append(FILL_UNIT);
+            nextLine.append(FILL_UNIT);
             edgeUnitCount >>= 1;
             int curPos = 1;
             while (size-- > 0) {
@@ -32,41 +32,73 @@ public class TreeUtils {
                     printNULL(result, nextLine, edgeUnitCount - 1);
                 //正常值打印
                 int halfEdgeUnitCount = edgeUnitCount >> 1;
+                //打印左半部分
+                //填充
                 for (int i = 0; i < halfEdgeUnitCount; i++) {
-                    result.append(emptyUnit);
-                    nextLine.append(emptyUnit);
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
                 }
+                //打印树枝
                 if (temp.left == null)
                     for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(emptyUnit);
-                        nextLine.append(emptyUnit);
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
                     }
-                else
+                else if (halfEdgeUnitCount > 2) {
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
+                    for (int i = 2; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append("_");
+                    }
+                } else
                     for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(emptyUnit);
-                        nextLine.append(branchUnit);
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
                     }
+                //打印中央部分
+                boolean exUnit = false;
+                if ((desPos & 1) == 0)//目标位置为偶数则是右子树
+                    result.append("\\");
+                else {
+                    if (halfEdgeUnitCount > 0) {
+                        result.append(FILL_UNIT);
+                        exUnit = true;
+                    }
+                    result.append("/");
+                }
                 if (desPos > 9)
                     nextLine.append("@");
                 else
                     nextLine.append(desPos);
-                result.append("|");
+                //打印右半部分
+                //打印树枝
                 if (temp.right == null)
                     for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(emptyUnit);
-                        nextLine.append(emptyUnit);
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
                     }
-                else
+                else if (halfEdgeUnitCount > 2) {
+                    for (int i = 2; i < halfEdgeUnitCount; i++) {
+                        result.append(FILL_UNIT);
+                        nextLine.append("_");
+                    }
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
+                } else
                     for (int i = 1; i < halfEdgeUnitCount; i++) {
-                        result.append(emptyUnit);
-                        nextLine.append(branchUnit);
+                        result.append(FILL_UNIT);
+                        nextLine.append(FILL_UNIT);
                     }
+                //填充
                 for (int i = 0; i < halfEdgeUnitCount; i++) {
-                    result.append(emptyUnit);
-                    nextLine.append(emptyUnit);
+                    result.append(FILL_UNIT);
+                    nextLine.append(FILL_UNIT);
                 }
-                result.append(emptyUnit);
-                nextLine.append(emptyUnit);
+                result.append(FILL_UNIT);
+                nextLine.append(FILL_UNIT);
+                if (exUnit)
+                    result.append("\b");
                 //添加下一层节点
                 if (temp.left != null) {
                     eleQueue.offer(temp.left);
@@ -89,17 +121,17 @@ public class TreeUtils {
 
     private static void printNULL(StringBuilder result, StringBuilder nextLine, int edgeUnitCount) {
         for (int i = 0; i < edgeUnitCount; i++) {
-            result.append(" ");
-            nextLine.append(" ");
+            result.append(FILL_UNIT);
+            nextLine.append(FILL_UNIT);
         }
-        result.append(" ");
-        nextLine.append(".");//NULL值位置
+        result.append(FILL_UNIT);
+        nextLine.append("+");//NULL值位置
         for (int i = 0; i < edgeUnitCount; i++) {
-            result.append(" ");
-            nextLine.append(" ");
+            result.append(FILL_UNIT);
+            nextLine.append(FILL_UNIT);
         }
-        result.append(" ");
-        nextLine.append(" ");
+        result.append(FILL_UNIT);
+        nextLine.append(FILL_UNIT);
     }
 
     public static int getMaxDepth(TreeNode node) {
