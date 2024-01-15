@@ -348,12 +348,10 @@ public class TreeUtils {
                 stack.push(tmp);
                 tmp = tmp.left;
             }
-            while (tmp == null) {
-                if (stack.empty())
-                    return res;
-                tmp = stack.pop();
-                res.add(tmp.val);
-            }
+            if (stack.isEmpty())
+                return res;
+            tmp = stack.pop();
+            res.add(tmp.val);
             tmp = tmp.right;
         }
     }
@@ -425,10 +423,11 @@ public class TreeUtils {
                     srcList.add(num);
             }
         } while (TreeUtils.getMaxDepth(bst.getRoot()) > 7);
-        System.out.println("Src Data: " + srcList);
+        System.out.print(TreeUtils.resolving(bst.getRoot()));
         System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(bst.getRoot()));
         System.out.println("Is AVL-tree: " + TreeUtils.isAVLTree(bst.getRoot()));
-        System.out.print(TreeUtils.resolving(bst.getRoot()));
+        System.out.println(srcList);
+        System.out.println(TreeUtils.midTraversal(bst.getRoot()));
 
     }
 
