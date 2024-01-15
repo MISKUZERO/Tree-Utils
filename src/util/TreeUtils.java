@@ -7,11 +7,13 @@ import java.util.*;
 
 public class TreeUtils {
 
-    private static final String FILL_UNIT = " ";
-    private static final String NULL_UNIT = ".";
+    private static final char FILL_UNIT = ' ';
+    private static final char NULL_UNIT = '.';
 
     @SuppressWarnings("all")
     public static StringBuilder resolving(Tree.TreeNode node) {
+        if (node == null)
+            return new StringBuilder();
         StringBuilder result = new StringBuilder();
         Queue<Tree.TreeNode> eleQueue = new LinkedList<>();
         Queue<Integer> posQueue = new LinkedList<>();
@@ -28,7 +30,7 @@ public class TreeUtils {
             int curPos = 1;
             while (size-- > 0) {
                 Tree.TreeNode temp = eleQueue.poll();
-                int desPos = posQueue.remove();
+                int desPos = posQueue.poll();
                 //NULL值打印
                 while (curPos++ != desPos)
                     printNULL(result, nextLine, edgeUnitCount - 1);
@@ -73,10 +75,26 @@ public class TreeUtils {
                     }
                     result.append("/");
                 }
-                if (desPos > 9)
-                    nextLine.append("@");
-                else
-                    nextLine.append(desPos);
+                //打印数值
+                String valStr = String.valueOf(temp.val);
+                int textLen = valStr.length();
+                int strLen = nextLine.length();
+                int scale = edgeUnitCount << 1;
+                int maxLen = scale;
+                char preChar;
+                while ((strLen - maxLen > 0) && (preChar = nextLine.charAt(strLen - maxLen)) == NULL_UNIT)
+                    maxLen += scale;
+                if (textLen < maxLen) {
+                    for (int i = 1; i < textLen; i++) nextLine.append("\b");
+                    nextLine.append(valStr);
+                } else if (textLen == maxLen) {
+                    if (temp.val < 0 || desPos == 1) {
+                        for (int i = 1; i < textLen; i++) nextLine.append("\b");
+                        nextLine.append(valStr);
+                    } else
+                        nextLine.append("*");
+                } else
+                    nextLine.append("*");
                 //打印右半部分
                 //打印树枝
                 if (temp.right == null)
@@ -131,6 +149,8 @@ public class TreeUtils {
 
     @SuppressWarnings("all")
     public static StringBuilder resolving2(Tree.TreeNode node) {
+        if (node == null)
+            return new StringBuilder();
         StringBuilder result = new StringBuilder();
         Queue<Tree.TreeNode> eleQueue = new LinkedList<>();
         Queue<Integer> posQueue = new LinkedList<>();
@@ -147,7 +167,7 @@ public class TreeUtils {
             int curPos = 1;
             while (size-- > 0) {
                 Tree.TreeNode temp = eleQueue.poll();
-                int desPos = posQueue.remove();
+                int desPos = posQueue.poll();
                 //NULL值打印
                 while (curPos++ != desPos)
                     printNULL(result, nextLine, edgeUnitCount - 1);
@@ -177,10 +197,26 @@ public class TreeUtils {
                     }
                     result.append("/");
                 }
-                if (desPos > 9)
-                    nextLine.append("@");
-                else
-                    nextLine.append(desPos);
+                //打印数值
+                String valStr = String.valueOf(temp.val);
+                int textLen = valStr.length();
+                int strLen = nextLine.length();
+                int scale = edgeUnitCount << 1;
+                int maxLen = scale;
+                char preChar;
+                while ((strLen - maxLen > 0) && (preChar = nextLine.charAt(strLen - maxLen)) == NULL_UNIT)
+                    maxLen += scale;
+                if (textLen < maxLen) {
+                    for (int i = 1; i < textLen; i++) nextLine.append("\b");
+                    nextLine.append(valStr);
+                } else if (textLen == maxLen) {
+                    if (temp.val < 0 || desPos == 1) {
+                        for (int i = 1; i < textLen; i++) nextLine.append("\b");
+                        nextLine.append(valStr);
+                    } else
+                        nextLine.append("*");
+                } else
+                    nextLine.append("*");
                 //打印右半部分
                 for (int i = 1; i < halfEdgeUnitCount; i++) {
                     result.append(FILL_UNIT);
@@ -378,21 +414,21 @@ public class TreeUtils {
     }
 
     public static void main(String[] args) {
-        BST bst = new BST();
-        System.out.print("[0, ");
-        for (int i = 0; i < 20; i++) {
-            int num = (int) (Math.random() * 20) - 10;
-            if (bst.add(num))
-                System.out.print(num + ", ");
-        }
-        System.out.println("\b\b]");
-        System.out.println("========================================================================================================================================");
+        BST bst;
+        ArrayList<Integer> srcList;
+        do {
+            bst = new BST();
+            srcList = new ArrayList<>();
+            for (int i = 0; i < 20; i++) {
+                int num = (int) (Math.random() * 200) - 100;
+                if (bst.add(num))
+                    srcList.add(num);
+            }
+        } while (TreeUtils.getMaxDepth(bst.getRoot()) > 7);
+        System.out.println("Src Data: " + srcList);
+        System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(bst.getRoot()));
+        System.out.println("Is AVL-tree: " + TreeUtils.isAVLTree(bst.getRoot()));
         System.out.print(TreeUtils.resolving(bst.getRoot()));
-        System.out.println("========================================================================================================================================");
-        System.out.print(TreeUtils.resolving2(bst.getRoot()));
-        System.out.println("========================================================================================================================================");
-        System.out.println(TreeUtils.getMaxDepth(bst.getRoot()));
-        System.out.println(TreeUtils.isAVLTree(bst.getRoot()));
 
     }
 
