@@ -5,6 +5,9 @@ import struct.Tree;
 
 import java.util.*;
 
+/**
+ * @author MiskuZero
+ */
 public class TreeUtils {
 
     private static final char FILL_UNIT = ' ';
@@ -277,7 +280,8 @@ public class TreeUtils {
             nextLine.append(FILL_UNIT);
         }
         result.append(FILL_UNIT);
-        nextLine.append(NULL_UNIT);//NULL值位置
+        //NULL值位置
+        nextLine.append(NULL_UNIT);
         for (int i = 0; i < edgeUnitCount; i++) {
             result.append(FILL_UNIT);
             nextLine.append(FILL_UNIT);
@@ -327,6 +331,25 @@ public class TreeUtils {
                 stack.push(treeNode.left);
         }
         return res;
+    }
+
+    public static List<Integer> preTraversal2(Tree.TreeNode node) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if (node == null)
+            return res;
+        Stack<Tree.TreeNode> stack = new Stack<>();
+        Tree.TreeNode tmp = node;
+        while (true) {
+            while (tmp != null) {
+                stack.push(tmp);
+                res.add(tmp.val);
+                tmp = tmp.left;
+            }
+            if (stack.isEmpty())
+                return res;
+            tmp = stack.pop();
+            tmp = tmp.right;
+        }
     }
 
     public static void recursionPreTraversal(Tree.TreeNode node, List<Integer> res) {
@@ -428,6 +451,8 @@ public class TreeUtils {
         System.out.println("Is AVL-tree: " + TreeUtils.isAVLTree(bst.getRoot()));
         System.out.println(srcList);
         System.out.println(TreeUtils.midTraversal(bst.getRoot()));
+        System.out.println(TreeUtils.preTraversal(bst.getRoot()));
+        System.out.println(TreeUtils.preTraversal2(bst.getRoot()));
 
     }
 
