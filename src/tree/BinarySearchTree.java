@@ -12,22 +12,25 @@ public class BinarySearchTree extends BinaryTree {
     public boolean add(int val) {
         if (root == null) {
             root = new TreeNode(val);
+            size++;
             return true;
         }
-        TreeNode tmp = root;
+        TreeNode curNode = root;
         while (true)
-            if (val < tmp.val)
-                if (tmp.left != null)
-                    tmp = tmp.left;
+            if (val < curNode.val)
+                if (curNode.left != null)
+                    curNode = curNode.left;
                 else {
-                    tmp.left = new TreeNode(val);
+                    curNode.left = new TreeNode(val);
+                    size++;
                     return true;
                 }
-            else if (val > tmp.val)
-                if (tmp.right != null)
-                    tmp = tmp.right;
+            else if (val > curNode.val)
+                if (curNode.right != null)
+                    curNode = curNode.right;
                 else {
-                    tmp.right = new TreeNode(val);
+                    curNode.right = new TreeNode(val);
+                    size++;
                     return true;
                 }
             else
@@ -35,7 +38,58 @@ public class BinarySearchTree extends BinaryTree {
     }
 
     @Override
-    public boolean del(int val) {
-        return true;
+    public boolean del(int key) {
+        if (size == 1)
+            if (key == root.val) {
+                root = null;
+                size--;
+                return true;
+            } else
+                return false;
+        TreeNode preNode = null;
+        TreeNode curNode = root;
+        while (curNode != null)
+            if (key < curNode.val) {
+                preNode = curNode;
+                curNode = curNode.left;
+            } else if (key > curNode.val) {
+                preNode = curNode;
+                curNode = curNode.right;
+            } else {
+                delNode(curNode, preNode);
+                size--;
+                return true;
+            }
+        return false;
     }
+
+    private void delNode(TreeNode desNode, TreeNode preNode) {
+        if (desNode.left != null) {
+            //找中序前驱
+            preNode = desNode;
+            TreeNode curNode = desNode.left;
+            while (curNode.right != null) {
+                preNode = curNode;
+                curNode = curNode.right;
+            }
+            desNode.val = curNode.val;
+            delNode(curNode, preNode);
+        } else if (desNode.right != null) {
+            //找中序后继
+            preNode = desNode;
+            TreeNode curNode = desNode.right;
+            while (curNode.left != null) {
+                preNode = curNode;
+                curNode = curNode.left;
+            }
+            desNode.val = curNode.val;
+            delNode(curNode, preNode);
+        } else {
+            if (preNode.left == desNode)
+                preNode.left = null;
+            else
+                preNode.right = null;
+        }
+    }
+
 }

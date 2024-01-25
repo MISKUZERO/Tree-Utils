@@ -7,6 +7,8 @@ public abstract class BinaryTree {
 
     protected TreeNode root;
 
+    protected int size;
+
     /**
      * 添加节点
      *
@@ -28,9 +30,6 @@ public abstract class BinaryTree {
         public int val;
         public TreeNode left;
         public TreeNode right;
-
-        public TreeNode() {
-        }
 
         public TreeNode(int val) {
             this.val = val;

@@ -306,7 +306,7 @@ public class TreeUtils {
             return Math.max(left, right) + 1;
     }
 
-    public static boolean isAVLTree(BinaryTree.TreeNode node) {
+    public static boolean isAvlTree(BinaryTree.TreeNode node) {
         return getMaxDepth0(node) >= 0;
     }
 
@@ -439,15 +439,26 @@ public class TreeUtils {
             bst = new BinarySearchTree();
             srcList = new ArrayList<>();
             for (int i = 0; i < 20; i++) {
-                int num = (int) (Math.random() * 200) - 100;
+                int num = (int) (Math.random() * 10) - 5;
                 if (bst.add(num))
                     srcList.add(num);
             }
         } while (TreeUtils.getMaxDepth(bst.root) > 7);
-        System.out.print(TreeUtils.resolving(bst.root));
         System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(bst.root));
-        System.out.println("Is AVL-tree: " + TreeUtils.isAVLTree(bst.root));
+        System.out.println("Is AVL-tree: " + TreeUtils.isAvlTree(bst.root));
         System.out.println(srcList);
+        System.out.print(TreeUtils.resolving(bst.root));
+        System.out.println("-4: " + bst.del(-4));
+        System.out.print(TreeUtils.resolving(bst.root));
+        System.out.println("0: " + bst.del(0));
+        System.out.print(TreeUtils.resolving(bst.root));
+        System.out.println("-1: " + bst.del(-1));
+        System.out.print(TreeUtils.resolving(bst.root));
+        System.out.println("3: " + bst.del(3));
+        System.out.print(TreeUtils.resolving(bst.root));
+        System.out.println("2: " + bst.del(2));
+        System.out.print(TreeUtils.resolving(bst.root));
+
 
     }
 
