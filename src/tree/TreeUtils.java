@@ -1,7 +1,4 @@
-package util;
-
-import struct.BST;
-import struct.Tree;
+package tree;
 
 import java.util.*;
 
@@ -14,11 +11,11 @@ public class TreeUtils {
     private static final char NULL_UNIT = '.';
 
     @SuppressWarnings("all")
-    public static StringBuilder resolving(Tree.TreeNode node) {
+    public static StringBuilder resolving(BinaryTree.TreeNode node) {
         if (node == null)
             return new StringBuilder();
         StringBuilder result = new StringBuilder();
-        Queue<Tree.TreeNode> eleQueue = new LinkedList<>();
+        Queue<BinaryTree.TreeNode> eleQueue = new LinkedList<>();
         Queue<Integer> posQueue = new LinkedList<>();
         eleQueue.offer(node);
         posQueue.offer(1);
@@ -32,11 +29,11 @@ public class TreeUtils {
             edgeUnitCount >>= 1;
             int curPos = 1;
             while (size-- > 0) {
-                Tree.TreeNode temp = eleQueue.poll();
+                BinaryTree.TreeNode temp = eleQueue.poll();
                 int desPos = posQueue.poll();
                 //NULL值打印
                 while (curPos++ != desPos)
-                    printNULL(result, nextLine, edgeUnitCount - 1);
+                    printNull(result, nextLine, edgeUnitCount - 1);
                 //正常值打印
                 int halfEdgeUnitCount = edgeUnitCount >> 1;
                 //打印左半部分
@@ -141,7 +138,7 @@ public class TreeUtils {
             }
             //NULL值打印（补充）
             while (curPos++ <= curLayerCapacity)
-                printNULL(result, nextLine, edgeUnitCount - 1);
+                printNull(result, nextLine, edgeUnitCount - 1);
             //打印下一行
             result.append("\n").append(nextLine).append("\n");
             curLayerCapacity <<= 1;
@@ -151,11 +148,11 @@ public class TreeUtils {
 
 
     @SuppressWarnings("all")
-    public static StringBuilder resolving2(Tree.TreeNode node) {
+    public static StringBuilder resolving2(BinaryTree.TreeNode node) {
         if (node == null)
             return new StringBuilder();
         StringBuilder result = new StringBuilder();
-        Queue<Tree.TreeNode> eleQueue = new LinkedList<>();
+        Queue<BinaryTree.TreeNode> eleQueue = new LinkedList<>();
         Queue<Integer> posQueue = new LinkedList<>();
         eleQueue.offer(node);
         posQueue.offer(1);
@@ -169,11 +166,11 @@ public class TreeUtils {
             edgeUnitCount >>= 1;
             int curPos = 1;
             while (size-- > 0) {
-                Tree.TreeNode temp = eleQueue.poll();
+                BinaryTree.TreeNode temp = eleQueue.poll();
                 int desPos = posQueue.poll();
                 //NULL值打印
                 while (curPos++ != desPos)
-                    printNULL(result, nextLine, edgeUnitCount - 1);
+                    printNull(result, nextLine, edgeUnitCount - 1);
                 //正常值打印
                 int halfEdgeUnitCount = edgeUnitCount >> 1;
                 //打印左半部分
@@ -248,7 +245,7 @@ public class TreeUtils {
             }
             //NULL值打印（补充）
             while (curPos++ <= curLayerCapacity)
-                printNULL(result, nextLine, edgeUnitCount - 1);
+                printNull(result, nextLine, edgeUnitCount - 1);
             //换行调整树枝斜率
             if (edgeUnitCount > 4) {
                 int count = edgeUnitCount >> 3;
@@ -274,7 +271,7 @@ public class TreeUtils {
         return result;
     }
 
-    private static void printNULL(StringBuilder result, StringBuilder nextLine, int edgeUnitCount) {
+    private static void printNull(StringBuilder result, StringBuilder nextLine, int edgeUnitCount) {
         for (int i = 0; i < edgeUnitCount; i++) {
             result.append(FILL_UNIT);
             nextLine.append(FILL_UNIT);
@@ -290,7 +287,7 @@ public class TreeUtils {
         nextLine.append(FILL_UNIT);
     }
 
-    public static int getMaxDepth(Tree.TreeNode node) {
+    public static int getMaxDepth(BinaryTree.TreeNode node) {
         if (node == null)
             return 0;
         int left = getMaxDepth(node.left);
@@ -298,7 +295,7 @@ public class TreeUtils {
         return Math.max(left, right) + 1;
     }
 
-    private static int getMaxDepth0(Tree.TreeNode node) {
+    private static int getMaxDepth0(BinaryTree.TreeNode node) {
         if (node == null)
             return 0;
         int left = getMaxDepth0(node.left);
@@ -309,21 +306,22 @@ public class TreeUtils {
             return Math.max(left, right) + 1;
     }
 
-    public static boolean isAVLTree(Tree.TreeNode node) {
+    public static boolean isAVLTree(BinaryTree.TreeNode node) {
         return getMaxDepth0(node) >= 0;
     }
 
     /*
     遍历方法
      */
-    public static List<Integer> preTraversal(Tree.TreeNode node) {
+
+    public static List<Integer> preTraversal(BinaryTree.TreeNode node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<Tree.TreeNode> stack = new Stack<>();
+        Stack<BinaryTree.TreeNode> stack = new Stack<>();
         stack.push(node);
         while (!stack.isEmpty()) {
-            Tree.TreeNode treeNode = stack.pop();
+            BinaryTree.TreeNode treeNode = stack.pop();
             res.add(treeNode.val);
             if (treeNode.right != null)
                 stack.push(treeNode.right);
@@ -333,12 +331,12 @@ public class TreeUtils {
         return res;
     }
 
-    public static List<Integer> preTraversal2(Tree.TreeNode node) {
+    public static List<Integer> preTraversal2(BinaryTree.TreeNode node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<Tree.TreeNode> stack = new Stack<>();
-        Tree.TreeNode tmp = node;
+        Stack<BinaryTree.TreeNode> stack = new Stack<>();
+        BinaryTree.TreeNode tmp = node;
         while (true) {
             while (tmp != null) {
                 stack.push(tmp);
@@ -352,7 +350,7 @@ public class TreeUtils {
         }
     }
 
-    public static void recursionPreTraversal(Tree.TreeNode node, List<Integer> res) {
+    public static void recursionPreTraversal(BinaryTree.TreeNode node, List<Integer> res) {
         if (node != null) {
             res.add(node.val);
             recursionPreTraversal(node.left, res);
@@ -360,12 +358,12 @@ public class TreeUtils {
         }
     }
 
-    public static List<Integer> midTraversal(Tree.TreeNode node) {
+    public static List<Integer> midTraversal(BinaryTree.TreeNode node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<Tree.TreeNode> stack = new Stack<>();
-        Tree.TreeNode tmp = node;
+        Stack<BinaryTree.TreeNode> stack = new Stack<>();
+        BinaryTree.TreeNode tmp = node;
         while (true) {
             while (tmp != null) {
                 stack.push(tmp);
@@ -379,7 +377,7 @@ public class TreeUtils {
         }
     }
 
-    public static void recursionMidTraversal(Tree.TreeNode node, List<Integer> res) {
+    public static void recursionMidTraversal(BinaryTree.TreeNode node, List<Integer> res) {
         if (node != null) {
             recursionMidTraversal(node.left, res);
             res.add(node.val);
@@ -387,14 +385,14 @@ public class TreeUtils {
         }
     }
 
-    public static List<Integer> postTraversal(Tree.TreeNode node) {
+    public static List<Integer> postTraversal(BinaryTree.TreeNode node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<Tree.TreeNode> stack = new Stack<>();
+        Stack<BinaryTree.TreeNode> stack = new Stack<>();
         stack.push(node);
         while (!stack.isEmpty()) {
-            Tree.TreeNode treeNode = stack.pop();
+            BinaryTree.TreeNode treeNode = stack.pop();
             res.add(treeNode.val);
             if (treeNode.left != null)
                 stack.push(treeNode.left);
@@ -409,7 +407,7 @@ public class TreeUtils {
         return res;
     }
 
-    public static void recursionPostTraversal(Tree.TreeNode node, List<Integer> res) {
+    public static void recursionPostTraversal(BinaryTree.TreeNode node, List<Integer> res) {
         if (node != null) {
             recursionPostTraversal(node.left, res);
             recursionPostTraversal(node.right, res);
@@ -417,14 +415,14 @@ public class TreeUtils {
         }
     }
 
-    public static List<Integer> layerTraversal(Tree.TreeNode node) {
+    public static List<Integer> layerTraversal(BinaryTree.TreeNode node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Queue<Tree.TreeNode> queue = new ArrayDeque<>();
+        Queue<BinaryTree.TreeNode> queue = new ArrayDeque<>();
         queue.offer(node);
         while (!queue.isEmpty()) {
-            Tree.TreeNode treeNode = queue.poll();
+            BinaryTree.TreeNode treeNode = queue.poll();
             res.add(treeNode.val);
             if (treeNode.left != null)
                 queue.offer(treeNode.left);
@@ -435,24 +433,21 @@ public class TreeUtils {
     }
 
     public static void main(String[] args) {
-        BST bst;
+        BinarySearchTree bst;
         ArrayList<Integer> srcList;
         do {
-            bst = new BST();
+            bst = new BinarySearchTree();
             srcList = new ArrayList<>();
             for (int i = 0; i < 20; i++) {
                 int num = (int) (Math.random() * 200) - 100;
                 if (bst.add(num))
                     srcList.add(num);
             }
-        } while (TreeUtils.getMaxDepth(bst.getRoot()) > 7);
-        System.out.print(TreeUtils.resolving(bst.getRoot()));
-        System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(bst.getRoot()));
-        System.out.println("Is AVL-tree: " + TreeUtils.isAVLTree(bst.getRoot()));
+        } while (TreeUtils.getMaxDepth(bst.root) > 7);
+        System.out.print(TreeUtils.resolving(bst.root));
+        System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(bst.root));
+        System.out.println("Is AVL-tree: " + TreeUtils.isAVLTree(bst.root));
         System.out.println(srcList);
-        System.out.println(TreeUtils.midTraversal(bst.getRoot()));
-        System.out.println(TreeUtils.preTraversal(bst.getRoot()));
-        System.out.println(TreeUtils.preTraversal2(bst.getRoot()));
 
     }
 

@@ -1,14 +1,14 @@
-package struct;
+package tree;
 
-public class BST extends Tree {
+/**
+ * @author MiskuZero
+ */
+public class BinarySearchTree extends BinaryTree {
 
-    public BST() {
+    public BinarySearchTree() {
     }
 
-    public TreeNode getRoot() {
-        return root;
-    }
-
+    @Override
     public boolean add(int val) {
         if (root == null) {
             root = new TreeNode(val);
@@ -34,6 +34,7 @@ public class BST extends Tree {
                 return false;
     }
 
+    @Override
     public boolean del(int val) {
         return true;
     }
