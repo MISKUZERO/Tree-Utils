@@ -9,27 +9,27 @@ public class BinarySearchTree extends BinaryTree {
     }
 
     @Override
-    public boolean add(int val) {
+    public boolean add(int key) {
         if (root == null) {
-            root = new TreeNode(val);
+            root = new TreeNode(key);
             size++;
             return true;
         }
-        TreeNode curNode = root;
+        TreeNode cur = root;
         while (true)
-            if (val < curNode.val)
-                if (curNode.left != null)
-                    curNode = curNode.left;
+            if (key < cur.key)
+                if (cur.left != null)
+                    cur = cur.left;
                 else {
-                    curNode.left = new TreeNode(val);
+                    cur.left = new TreeNode(key);
                     size++;
                     return true;
                 }
-            else if (val > curNode.val)
-                if (curNode.right != null)
-                    curNode = curNode.right;
+            else if (key > cur.key)
+                if (cur.right != null)
+                    cur = cur.right;
                 else {
-                    curNode.right = new TreeNode(val);
+                    cur.right = new TreeNode(key);
                     size++;
                     return true;
                 }
@@ -40,55 +40,55 @@ public class BinarySearchTree extends BinaryTree {
     @Override
     public boolean del(int key) {
         if (size == 1)
-            if (key == root.val) {
+            if (key == root.key) {
                 root = null;
                 size--;
                 return true;
             } else
                 return false;
-        TreeNode preNode = null;
-        TreeNode curNode = root;
-        while (curNode != null)
-            if (key < curNode.val) {
-                preNode = curNode;
-                curNode = curNode.left;
-            } else if (key > curNode.val) {
-                preNode = curNode;
-                curNode = curNode.right;
+        TreeNode father = null;
+        TreeNode cur = root;
+        while (cur != null)
+            if (key < cur.key) {
+                father = cur;
+                cur = cur.left;
+            } else if (key > cur.key) {
+                father = cur;
+                cur = cur.right;
             } else {
-                delNode(curNode, preNode);
+                delNode(cur, father);
                 size--;
                 return true;
             }
         return false;
     }
 
-    private void delNode(TreeNode desNode, TreeNode preNode) {
-        if (desNode.left != null) {
+    private void delNode(TreeNode node, TreeNode father) {
+        if (node.left != null) {
             //找中序前驱
-            preNode = desNode;
-            TreeNode curNode = desNode.left;
-            while (curNode.right != null) {
-                preNode = curNode;
-                curNode = curNode.right;
+            father = node;
+            TreeNode cur = node.left;
+            while (cur.right != null) {
+                father = cur;
+                cur = cur.right;
             }
-            desNode.val = curNode.val;
-            delNode(curNode, preNode);
-        } else if (desNode.right != null) {
+            node.key = cur.key;
+            delNode(cur, father);
+        } else if (node.right != null) {
             //找中序后继
-            preNode = desNode;
-            TreeNode curNode = desNode.right;
-            while (curNode.left != null) {
-                preNode = curNode;
-                curNode = curNode.left;
+            father = node;
+            TreeNode cur = node.right;
+            while (cur.left != null) {
+                father = cur;
+                cur = cur.left;
             }
-            desNode.val = curNode.val;
-            delNode(curNode, preNode);
+            node.key = cur.key;
+            delNode(cur, father);
         } else {
-            if (preNode.left == desNode)
-                preNode.left = null;
+            if (father.left == node)
+                father.left = null;
             else
-                preNode.right = null;
+                father.right = null;
         }
     }
 

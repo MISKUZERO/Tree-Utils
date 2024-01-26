@@ -12,27 +12,27 @@ public abstract class BinaryTree {
     /**
      * 添加节点
      *
-     * @param val 关键字
+     * @param key 关键字
      * @return true - 如果添加成功，否则为false
      */
-    protected abstract boolean add(int val);
+    protected abstract boolean add(int key);
 
     /**
      * 删除节点
      *
-     * @param val 关键字
+     * @param key 关键字
      * @return true - 如果删除成功，否则为false
      */
-    protected abstract boolean del(int val);
+    protected abstract boolean del(int key);
 
-    public static class TreeNode {
+    protected static class TreeNode {
 
-        public int val;
-        public TreeNode left;
-        public TreeNode right;
+        protected int key;
+        protected TreeNode left;
+        protected TreeNode right;
 
-        public TreeNode(int val) {
-            this.val = val;
+        protected TreeNode(int key) {
+            this.key = key;
         }
 
     }

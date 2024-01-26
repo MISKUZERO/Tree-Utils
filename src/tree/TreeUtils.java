@@ -76,8 +76,8 @@ public class TreeUtils {
                     result.append("/");
                 }
                 //打印数值
-                String valStr = String.valueOf(temp.val);
-                int textLen = valStr.length();
+                String keyStr = String.valueOf(temp.key);
+                int textLen = keyStr.length();
                 int strLen = nextLine.length();
                 int scale = edgeUnitCount << 1;
                 int maxLen = scale;
@@ -86,11 +86,11 @@ public class TreeUtils {
                     maxLen += scale;
                 if (textLen < maxLen) {
                     for (int i = 1; i < textLen; i++) nextLine.append("\b");
-                    nextLine.append(valStr);
+                    nextLine.append(keyStr);
                 } else if (textLen == maxLen) {
-                    if (temp.val < 0 || desPos == 1) {
+                    if (temp.key < 0 || desPos == 1) {
                         for (int i = 1; i < textLen; i++) nextLine.append("\b");
-                        nextLine.append(valStr);
+                        nextLine.append(keyStr);
                     } else
                         nextLine.append("*");
                 } else
@@ -198,8 +198,8 @@ public class TreeUtils {
                     result.append("/");
                 }
                 //打印数值
-                String valStr = String.valueOf(temp.val);
-                int textLen = valStr.length();
+                String keyStr = String.valueOf(temp.key);
+                int textLen = keyStr.length();
                 int strLen = nextLine.length();
                 int scale = edgeUnitCount << 1;
                 int maxLen = scale;
@@ -208,11 +208,11 @@ public class TreeUtils {
                     maxLen += scale;
                 if (textLen < maxLen) {
                     for (int i = 1; i < textLen; i++) nextLine.append("\b");
-                    nextLine.append(valStr);
+                    nextLine.append(keyStr);
                 } else if (textLen == maxLen) {
-                    if (temp.val < 0 || desPos == 1) {
+                    if (temp.key < 0 || desPos == 1) {
                         for (int i = 1; i < textLen; i++) nextLine.append("\b");
-                        nextLine.append(valStr);
+                        nextLine.append(keyStr);
                     } else
                         nextLine.append("*");
                 } else
@@ -322,7 +322,7 @@ public class TreeUtils {
         stack.push(node);
         while (!stack.isEmpty()) {
             BinaryTree.TreeNode treeNode = stack.pop();
-            res.add(treeNode.val);
+            res.add(treeNode.key);
             if (treeNode.right != null)
                 stack.push(treeNode.right);
             if (treeNode.left != null)
@@ -340,7 +340,7 @@ public class TreeUtils {
         while (true) {
             while (tmp != null) {
                 stack.push(tmp);
-                res.add(tmp.val);
+                res.add(tmp.key);
                 tmp = tmp.left;
             }
             if (stack.isEmpty())
@@ -352,7 +352,7 @@ public class TreeUtils {
 
     public static void recursionPreTraversal(BinaryTree.TreeNode node, List<Integer> res) {
         if (node != null) {
-            res.add(node.val);
+            res.add(node.key);
             recursionPreTraversal(node.left, res);
             recursionPreTraversal(node.right, res);
         }
@@ -372,7 +372,7 @@ public class TreeUtils {
             if (stack.isEmpty())
                 return res;
             tmp = stack.pop();
-            res.add(tmp.val);
+            res.add(tmp.key);
             tmp = tmp.right;
         }
     }
@@ -380,7 +380,7 @@ public class TreeUtils {
     public static void recursionMidTraversal(BinaryTree.TreeNode node, List<Integer> res) {
         if (node != null) {
             recursionMidTraversal(node.left, res);
-            res.add(node.val);
+            res.add(node.key);
             recursionMidTraversal(node.right, res);
         }
     }
@@ -393,13 +393,13 @@ public class TreeUtils {
         stack.push(node);
         while (!stack.isEmpty()) {
             BinaryTree.TreeNode treeNode = stack.pop();
-            res.add(treeNode.val);
+            res.add(treeNode.key);
             if (treeNode.left != null)
                 stack.push(treeNode.left);
             if (treeNode.right != null)
                 stack.push(treeNode.right);
         }
-        for (int i = 0; i < res.size() / 2; i++) {
+        for (int i = 0; i < res.size() >> 1; i++) {
             int tmp = res.get(i);
             res.set(i, res.get(res.size() - i - 1));
             res.set(res.size() - i - 1, tmp);
@@ -411,7 +411,7 @@ public class TreeUtils {
         if (node != null) {
             recursionPostTraversal(node.left, res);
             recursionPostTraversal(node.right, res);
-            res.add(node.val);
+            res.add(node.key);
         }
     }
 
@@ -423,7 +423,7 @@ public class TreeUtils {
         queue.offer(node);
         while (!queue.isEmpty()) {
             BinaryTree.TreeNode treeNode = queue.poll();
-            res.add(treeNode.val);
+            res.add(treeNode.key);
             if (treeNode.left != null)
                 queue.offer(treeNode.left);
             if (treeNode.right != null)
@@ -433,19 +433,21 @@ public class TreeUtils {
     }
 
     public static void main(String[] args) {
+
+        final int addCount = 50;
         BinarySearchTree bst;
         ArrayList<Integer> srcList;
         do {
             bst = new BinarySearchTree();
             srcList = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
-                int num = (int) (Math.random() * 10) - 5;
+            for (int i = 0; i < addCount; i++) {
+                int num = ((int) (Math.random() * addCount) - (addCount >> 1)) >> 1;
                 if (bst.add(num))
                     srcList.add(num);
             }
         } while (TreeUtils.getMaxDepth(bst.root) > 7);
         System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(bst.root));
-        System.out.println("Is AVL-tree: " + TreeUtils.isAvlTree(bst.root));
+        System.out.println("Is Avl-Tree: " + TreeUtils.isAvlTree(bst.root));
         System.out.println(srcList);
         System.out.print(TreeUtils.resolving(bst.root));
         System.out.println("-4: " + bst.del(-4));
@@ -458,6 +460,7 @@ public class TreeUtils {
         System.out.print(TreeUtils.resolving(bst.root));
         System.out.println("2: " + bst.del(2));
         System.out.print(TreeUtils.resolving(bst.root));
+        System.out.println("OK!");
 
 
     }
