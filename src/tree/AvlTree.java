@@ -5,9 +5,9 @@ package tree;
  */
 public class AvlTree extends BinarySearchTree {
 
-    private static class AvlNode extends Node {
+    protected static class AvlNode extends Node {
 
-        private int depth;
+        protected int depth;
 
         protected AvlNode(int key) {
             super(key);
