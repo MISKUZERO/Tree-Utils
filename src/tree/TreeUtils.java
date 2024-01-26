@@ -212,7 +212,7 @@ public class TreeUtils {
                     result.append("/");
                 }
                 //打印数值
-                String keyStr = String.valueOf(temp.key) + "," + ((AvlTree.AvlNode) temp).depth;
+                String keyStr = String.valueOf(temp.key) + "," + ((AvlTree.AvlNode) temp).height;
                 int textLen = keyStr.length();
                 int strLen = nextLine.length();
                 int scale = edgeUnitCount << 1;
@@ -452,26 +452,29 @@ public class TreeUtils {
         do {
             for (int i = 0; i < addCount; i++) {
                 int num = ((int) (Math.random() * addCount) - (addCount >> 1)) >> 1;
-                if (avlTree.add(num))
+                if (avlTree.add(num)) {
+                    System.out.print(TreeUtils.resolving(avlTree.root));
                     srcList.add(num);
+                    System.out.println("------(" + srcList.size() + ").[" + num + "]-----------------------------------------------------------------------");
+                }
             }
         } while (TreeUtils.getMaxDepth(avlTree.root) > 7);
         System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(avlTree.root));
         System.out.println("Is Avl-Tree: " + TreeUtils.isAvlTree(avlTree.root));
         System.out.println(srcList);
-        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-        System.out.println("-4: " + avlTree.del(-4));
-        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-        System.out.println("0: " + avlTree.del(0));
-        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-        System.out.println("-1: " + avlTree.del(-1));
-        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-        System.out.println("3: " + avlTree.del(3));
-        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-        System.out.println("2: " + avlTree.del(2));
-        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-        System.out.println("Size: " + avlTree.size());
-        System.out.println("OK!");
+        System.out.println(TreeUtils.midTraversal(avlTree.root));
+//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
+//        System.out.println("-4: " + avlTree.del(-4));
+//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
+//        System.out.println("0: " + avlTree.del(0));
+//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
+//        System.out.println("-1: " + avlTree.del(-1));
+//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
+//        System.out.println("3: " + avlTree.del(3));
+//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
+//        System.out.println("2: " + avlTree.del(2));
+//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
+//        System.out.println("Size: " + avlTree.size());
 
     }
 
