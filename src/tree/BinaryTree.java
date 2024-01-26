@@ -5,7 +5,7 @@ package tree;
  */
 public abstract class BinaryTree {
 
-    protected TreeNode root;
+    protected Node root;
 
     protected int size;
 
@@ -29,13 +29,13 @@ public abstract class BinaryTree {
         return size;
     }
 
-    protected static class TreeNode {
+    protected static class Node {
 
         protected int key;
-        protected TreeNode left;
-        protected TreeNode right;
+        protected Node left;
+        protected Node right;
 
-        protected TreeNode(int key) {
+        protected Node(int key) {
             this.key = key;
         }
 

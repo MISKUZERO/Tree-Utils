@@ -11,11 +11,11 @@ public class TreeUtils {
     private static final char NULL_UNIT = '.';
 
     @SuppressWarnings("all")
-    public static StringBuilder resolving(BinaryTree.TreeNode node) {
+    public static StringBuilder resolving(BinaryTree.Node node) {
         if (node == null)
             return new StringBuilder();
         StringBuilder result = new StringBuilder();
-        Queue<BinaryTree.TreeNode> eleQueue = new LinkedList<>();
+        Queue<BinaryTree.Node> eleQueue = new LinkedList<>();
         Queue<Integer> posQueue = new LinkedList<>();
         eleQueue.offer(node);
         posQueue.offer(1);
@@ -29,7 +29,7 @@ public class TreeUtils {
             edgeUnitCount >>= 1;
             int curPos = 1;
             while (size-- > 0) {
-                BinaryTree.TreeNode temp = eleQueue.poll();
+                BinaryTree.Node temp = eleQueue.poll();
                 int desPos = posQueue.poll();
                 //NULL值打印
                 while (curPos++ != desPos)
@@ -148,11 +148,11 @@ public class TreeUtils {
 
 
     @SuppressWarnings("all")
-    public static StringBuilder resolving2(BinaryTree.TreeNode node) {
+    public static StringBuilder resolving2(BinaryTree.Node node) {
         if (node == null)
             return new StringBuilder();
         StringBuilder result = new StringBuilder();
-        Queue<BinaryTree.TreeNode> eleQueue = new LinkedList<>();
+        Queue<BinaryTree.Node> eleQueue = new LinkedList<>();
         Queue<Integer> posQueue = new LinkedList<>();
         eleQueue.offer(node);
         posQueue.offer(1);
@@ -166,7 +166,7 @@ public class TreeUtils {
             edgeUnitCount >>= 1;
             int curPos = 1;
             while (size-- > 0) {
-                BinaryTree.TreeNode temp = eleQueue.poll();
+                BinaryTree.Node temp = eleQueue.poll();
                 int desPos = posQueue.poll();
                 //NULL值打印
                 while (curPos++ != desPos)
@@ -287,7 +287,7 @@ public class TreeUtils {
         nextLine.append(FILL_UNIT);
     }
 
-    public static int getMaxDepth(BinaryTree.TreeNode node) {
+    public static int getMaxDepth(BinaryTree.Node node) {
         if (node == null)
             return 0;
         int left = getMaxDepth(node.left);
@@ -295,7 +295,7 @@ public class TreeUtils {
         return Math.max(left, right) + 1;
     }
 
-    private static int getMaxDepth0(BinaryTree.TreeNode node) {
+    private static int getMaxDepth0(BinaryTree.Node node) {
         if (node == null)
             return 0;
         int left = getMaxDepth0(node.left);
@@ -306,7 +306,7 @@ public class TreeUtils {
             return Math.max(left, right) + 1;
     }
 
-    public static boolean isAvlTree(BinaryTree.TreeNode node) {
+    public static boolean isAvlTree(BinaryTree.Node node) {
         return getMaxDepth0(node) >= 0;
     }
 
@@ -314,29 +314,29 @@ public class TreeUtils {
     遍历方法
      */
 
-    public static List<Integer> preTraversal(BinaryTree.TreeNode node) {
+    public static List<Integer> preTraversal(BinaryTree.Node node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<BinaryTree.TreeNode> stack = new Stack<>();
+        Stack<BinaryTree.Node> stack = new Stack<>();
         stack.push(node);
         while (!stack.isEmpty()) {
-            BinaryTree.TreeNode treeNode = stack.pop();
-            res.add(treeNode.key);
-            if (treeNode.right != null)
-                stack.push(treeNode.right);
-            if (treeNode.left != null)
-                stack.push(treeNode.left);
+            BinaryTree.Node cur = stack.pop();
+            res.add(cur.key);
+            if (cur.right != null)
+                stack.push(cur.right);
+            if (cur.left != null)
+                stack.push(cur.left);
         }
         return res;
     }
 
-    public static List<Integer> preTraversal2(BinaryTree.TreeNode node) {
+    public static List<Integer> preTraversal2(BinaryTree.Node node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<BinaryTree.TreeNode> stack = new Stack<>();
-        BinaryTree.TreeNode tmp = node;
+        Stack<BinaryTree.Node> stack = new Stack<>();
+        BinaryTree.Node tmp = node;
         while (true) {
             while (tmp != null) {
                 stack.push(tmp);
@@ -350,7 +350,7 @@ public class TreeUtils {
         }
     }
 
-    public static void recursionPreTraversal(BinaryTree.TreeNode node, List<Integer> res) {
+    public static void recursionPreTraversal(BinaryTree.Node node, List<Integer> res) {
         if (node != null) {
             res.add(node.key);
             recursionPreTraversal(node.left, res);
@@ -358,12 +358,12 @@ public class TreeUtils {
         }
     }
 
-    public static List<Integer> midTraversal(BinaryTree.TreeNode node) {
+    public static List<Integer> midTraversal(BinaryTree.Node node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<BinaryTree.TreeNode> stack = new Stack<>();
-        BinaryTree.TreeNode tmp = node;
+        Stack<BinaryTree.Node> stack = new Stack<>();
+        BinaryTree.Node tmp = node;
         while (true) {
             while (tmp != null) {
                 stack.push(tmp);
@@ -377,7 +377,7 @@ public class TreeUtils {
         }
     }
 
-    public static void recursionMidTraversal(BinaryTree.TreeNode node, List<Integer> res) {
+    public static void recursionMidTraversal(BinaryTree.Node node, List<Integer> res) {
         if (node != null) {
             recursionMidTraversal(node.left, res);
             res.add(node.key);
@@ -385,19 +385,19 @@ public class TreeUtils {
         }
     }
 
-    public static List<Integer> postTraversal(BinaryTree.TreeNode node) {
+    public static List<Integer> postTraversal(BinaryTree.Node node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Stack<BinaryTree.TreeNode> stack = new Stack<>();
+        Stack<BinaryTree.Node> stack = new Stack<>();
         stack.push(node);
         while (!stack.isEmpty()) {
-            BinaryTree.TreeNode treeNode = stack.pop();
-            res.add(treeNode.key);
-            if (treeNode.left != null)
-                stack.push(treeNode.left);
-            if (treeNode.right != null)
-                stack.push(treeNode.right);
+            BinaryTree.Node cur = stack.pop();
+            res.add(cur.key);
+            if (cur.left != null)
+                stack.push(cur.left);
+            if (cur.right != null)
+                stack.push(cur.right);
         }
         for (int i = 0; i < res.size() >> 1; i++) {
             int tmp = res.get(i);
@@ -407,7 +407,7 @@ public class TreeUtils {
         return res;
     }
 
-    public static void recursionPostTraversal(BinaryTree.TreeNode node, List<Integer> res) {
+    public static void recursionPostTraversal(BinaryTree.Node node, List<Integer> res) {
         if (node != null) {
             recursionPostTraversal(node.left, res);
             recursionPostTraversal(node.right, res);
@@ -415,19 +415,19 @@ public class TreeUtils {
         }
     }
 
-    public static List<Integer> layerTraversal(BinaryTree.TreeNode node) {
+    public static List<Integer> layerTraversal(BinaryTree.Node node) {
         ArrayList<Integer> res = new ArrayList<>();
         if (node == null)
             return res;
-        Queue<BinaryTree.TreeNode> queue = new ArrayDeque<>();
+        Queue<BinaryTree.Node> queue = new ArrayDeque<>();
         queue.offer(node);
         while (!queue.isEmpty()) {
-            BinaryTree.TreeNode treeNode = queue.poll();
-            res.add(treeNode.key);
-            if (treeNode.left != null)
-                queue.offer(treeNode.left);
-            if (treeNode.right != null)
-                queue.offer(treeNode.right);
+            BinaryTree.Node cur = queue.poll();
+            res.add(cur.key);
+            if (cur.left != null)
+                queue.offer(cur.left);
+            if (cur.right != null)
+                queue.offer(cur.right);
         }
         return res;
     }
@@ -459,6 +459,7 @@ public class TreeUtils {
         System.out.println("2: " + avlTree.del(2));
         System.out.print(TreeUtils.resolving(avlTree.root));
         System.out.println("Size: " + avlTree.size());
+        System.out.println("OK!");
 
     }
 

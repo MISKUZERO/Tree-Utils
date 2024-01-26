@@ -11,17 +11,17 @@ public class BinarySearchTree extends BinaryTree {
     @Override
     public boolean add(int key) {
         if (root == null) {
-            root = new TreeNode(key);
+            root = new Node(key);
             size++;
             return true;
         }
-        TreeNode cur = root;
+        Node cur = root;
         while (true)
             if (key < cur.key)
                 if (cur.left != null)
                     cur = cur.left;
                 else {
-                    cur.left = new TreeNode(key);
+                    cur.left = new Node(key);
                     size++;
                     return true;
                 }
@@ -29,7 +29,7 @@ public class BinarySearchTree extends BinaryTree {
                 if (cur.right != null)
                     cur = cur.right;
                 else {
-                    cur.right = new TreeNode(key);
+                    cur.right = new Node(key);
                     size++;
                     return true;
                 }
@@ -46,8 +46,8 @@ public class BinarySearchTree extends BinaryTree {
                 return true;
             } else
                 return false;
-        TreeNode father = null;
-        TreeNode cur = root;
+        Node father = null;
+        Node cur = root;
         while (cur != null)
             if (key < cur.key) {
                 father = cur;
@@ -63,11 +63,11 @@ public class BinarySearchTree extends BinaryTree {
         return false;
     }
 
-    private void delNode(TreeNode node, TreeNode father) {
+    private void delNode(Node node, Node father) {
         if (node.left != null) {
             //找中序前驱
             father = node;
-            TreeNode cur = node.left;
+            Node cur = node.left;
             while (cur.right != null) {
                 father = cur;
                 cur = cur.right;
@@ -77,7 +77,7 @@ public class BinarySearchTree extends BinaryTree {
         } else if (node.right != null) {
             //找中序后继
             father = node;
-            TreeNode cur = node.right;
+            Node cur = node.right;
             while (cur.left != null) {
                 father = cur;
                 cur = cur.left;

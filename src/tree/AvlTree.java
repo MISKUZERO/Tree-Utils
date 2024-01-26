@@ -5,29 +5,39 @@ package tree;
  */
 public class AvlTree extends BinarySearchTree {
 
-    @Override
-    public boolean add(int key) {
-        return addNode(root, null, key);
+    private static class AvlNode extends Node {
+
+        private int depth;
+
+        protected AvlNode(int key) {
+            super(key);
+            depth = 1;
+        }
     }
 
-    private boolean addNode(TreeNode node, TreeNode father, int key) {
+    @Override
+    public boolean add(int key) {
+        return addNode((AvlNode) root, null, key);
+    }
+
+    private boolean addNode(AvlNode node, AvlNode father, int key) {
         if (node == null) {
             if (father == null) {
-                root = new TreeNode(key);
+                root = new AvlNode(key);
                 size++;
                 return true;
             }
             if (key < father.key)
-                father.left = new TreeNode(key);
+                father.left = new AvlNode(key);
             else
-                father.right = new TreeNode(key);
+                father.right = new AvlNode(key);
             size++;
             return true;
         } else {
             if (key < node.key)
-                return addNode(node.left, node, key);
+                return addNode((AvlNode) node.left, node, key);
             else if (key > node.key)
-                return addNode(node.right, node, key);
+                return addNode((AvlNode) node.right, node, key);
             else
                 return false;
         }
