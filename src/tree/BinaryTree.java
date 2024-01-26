@@ -15,7 +15,7 @@ public abstract class BinaryTree {
      * @param key 关键字
      * @return true - 如果添加成功，否则为false
      */
-    protected abstract boolean add(int key);
+    public abstract boolean add(int key);
 
     /**
      * 删除节点
@@ -23,7 +23,11 @@ public abstract class BinaryTree {
      * @param key 关键字
      * @return true - 如果删除成功，否则为false
      */
-    protected abstract boolean del(int key);
+    public abstract boolean del(int key);
+
+    public int size() {
+        return size;
+    }
 
     protected static class TreeNode {
 

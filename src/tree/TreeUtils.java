@@ -434,34 +434,31 @@ public class TreeUtils {
 
     public static void main(String[] args) {
 
-        final int addCount = 50;
-        BinarySearchTree bst;
-        ArrayList<Integer> srcList;
+        final int addCount = 20;
+        AvlTree avlTree = new AvlTree();
+        ArrayList<Integer> srcList = new ArrayList<>();
         do {
-            bst = new BinarySearchTree();
-            srcList = new ArrayList<>();
             for (int i = 0; i < addCount; i++) {
                 int num = ((int) (Math.random() * addCount) - (addCount >> 1)) >> 1;
-                if (bst.add(num))
+                if (avlTree.add(num))
                     srcList.add(num);
             }
-        } while (TreeUtils.getMaxDepth(bst.root) > 7);
-        System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(bst.root));
-        System.out.println("Is Avl-Tree: " + TreeUtils.isAvlTree(bst.root));
+        } while (TreeUtils.getMaxDepth(avlTree.root) > 7);
+        System.out.println("Tree Depth: " + TreeUtils.getMaxDepth(avlTree.root));
+        System.out.println("Is Avl-Tree: " + TreeUtils.isAvlTree(avlTree.root));
         System.out.println(srcList);
-        System.out.print(TreeUtils.resolving(bst.root));
-        System.out.println("-4: " + bst.del(-4));
-        System.out.print(TreeUtils.resolving(bst.root));
-        System.out.println("0: " + bst.del(0));
-        System.out.print(TreeUtils.resolving(bst.root));
-        System.out.println("-1: " + bst.del(-1));
-        System.out.print(TreeUtils.resolving(bst.root));
-        System.out.println("3: " + bst.del(3));
-        System.out.print(TreeUtils.resolving(bst.root));
-        System.out.println("2: " + bst.del(2));
-        System.out.print(TreeUtils.resolving(bst.root));
-        System.out.println("OK!");
-
+        System.out.print(TreeUtils.resolving(avlTree.root));
+        System.out.println("-4: " + avlTree.del(-4));
+        System.out.print(TreeUtils.resolving(avlTree.root));
+        System.out.println("0: " + avlTree.del(0));
+        System.out.print(TreeUtils.resolving(avlTree.root));
+        System.out.println("-1: " + avlTree.del(-1));
+        System.out.print(TreeUtils.resolving(avlTree.root));
+        System.out.println("3: " + avlTree.del(3));
+        System.out.print(TreeUtils.resolving(avlTree.root));
+        System.out.println("2: " + avlTree.del(2));
+        System.out.print(TreeUtils.resolving(avlTree.root));
+        System.out.println("Size: " + avlTree.size());
 
     }
 
