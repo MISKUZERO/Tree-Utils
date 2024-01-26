@@ -34,13 +34,25 @@ public class AvlTree extends BinarySearchTree {
             size++;
             return true;
         } else {
-            if (key < node.key)
-                return addNode((AvlNode) node.left, node, key);
-            else if (key > node.key)
-                return addNode((AvlNode) node.right, node, key);
-            else
+            if (key < node.key) {
+                if (addNode((AvlNode) node.left, node, key)) {
+                    node.depth = Math.max(depth((AvlNode) node.left), depth((AvlNode) node.right)) + 1;
+                    return true;
+                } else
+                    return false;
+            } else if (key > node.key) {
+                if (addNode((AvlNode) node.right, node, key)) {
+                    node.depth = Math.max(depth((AvlNode) node.left), depth((AvlNode) node.right)) + 1;
+                    return true;
+                } else
+                    return false;
+            } else
                 return false;
         }
+    }
+
+    private int depth(AvlNode node) {
+        return node == null ? 0 : node.depth;
     }
 
     @Override
