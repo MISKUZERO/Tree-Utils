@@ -64,37 +64,15 @@ public class AvlTree extends BinarySearchTree {
             node = (AvlNode) node.left;
             if (height((AvlNode) node.left) < height((AvlNode) node.right)) {
                 //LR
-                Node kid = node.right;
-                node.right = kid.left;
-                kid.left = node;
-                father.left = kid.right;
-                kid.right = father;
-                if (grandfather == null)
-                    root = kid;
-                else {
-                    if (grandfather.right == father)
-                        grandfather.right = kid;
-                    else
-                        grandfather.left = kid;
-                }
-                //更新节点高度
-                father.height -= 2;
+                Node n = node.right;
+                node.right = n.left;
+                n.left = node;
                 node.height--;
-                ((AvlNode) kid).height++;
+                ((AvlNode) n).height++;
+                rRotate(n, father, grandfather);
             } else {
                 //LL
-                father.left = node.right;
-                node.right = father;
-                if (grandfather == null)
-                    root = node;
-                else {
-                    if (grandfather.right == father)
-                        grandfather.right = node;
-                    else
-                        grandfather.left = node;
-                }
-                //更新节点高度
-                father.height -= 2;
+                rRotate(node, father, grandfather);
             }
         } else if (lDepth - rDepth < -1) {
             Node grandfather = father;
@@ -102,42 +80,50 @@ public class AvlTree extends BinarySearchTree {
             node = (AvlNode) node.right;
             if (height((AvlNode) node.left) > height((AvlNode) node.right)) {
                 //RL
-                Node kid = node.left;
-                node.left = kid.right;
-                kid.right = node;
-                father.right = kid.left;
-                kid.left = father;
-                if (grandfather == null)
-                    root = kid;
-                else {
-                    if (grandfather.right == father)
-                        grandfather.right = kid;
-                    else
-                        grandfather.left = kid;
-                }
-                //更新节点高度
-                father.height -= 2;
+                Node n = node.left;
+                node.left = n.right;
+                n.right = node;
                 node.height--;
-                ((AvlNode) kid).height++;
+                ((AvlNode) n).height++;
+                lRotate(n, father, grandfather);
             } else {
                 //RR
-                father.right = node.left;
-                node.left = father;
-                if (grandfather == null)
-                    root = node;
-                else {
-                    if (grandfather.right == father)
-                        grandfather.right = node;
-                    else
-                        grandfather.left = node;
-                }
-                //更新节点高度
-                father.height -= 2;
+                lRotate(node, father, grandfather);
             }
         }
     }
 
-    private int height(AvlNode node) {
+    private void lRotate(Node node, AvlNode father, Node grandfather) {
+        father.right = node.left;
+        node.left = father;
+        if (grandfather == null)
+            root = node;
+        else {
+            if (grandfather.right == father)
+                grandfather.right = node;
+            else
+                grandfather.left = node;
+        }
+        //更新节点高度
+        father.height -= 2;
+    }
+
+    private void rRotate(Node node, AvlNode father, Node grandfather) {
+        father.left = node.right;
+        node.right = father;
+        if (grandfather == null)
+            root = node;
+        else {
+            if (grandfather.right == father)
+                grandfather.right = node;
+            else
+                grandfather.left = node;
+        }
+        //更新节点高度
+        father.height -= 2;
+    }
+
+    private static int height(AvlNode node) {
         return node == null ? 0 : node.height;
     }
 
