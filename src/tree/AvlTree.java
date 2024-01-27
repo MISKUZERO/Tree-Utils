@@ -94,8 +94,7 @@ public class AvlTree extends BinarySearchTree {
                         grandfather.left = node;
                 }
                 //更新节点高度
-                node.height++;
-                father.height--;
+                father.height -= 2;
             }
         } else if (lDepth - rDepth < -1) {
             Node grandfather = father;
@@ -133,8 +132,7 @@ public class AvlTree extends BinarySearchTree {
                         grandfather.left = node;
                 }
                 //更新节点高度
-                node.height++;
-                father.height--;
+                father.height -= 2;
             }
         }
     }

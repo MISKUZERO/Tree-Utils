@@ -446,8 +446,10 @@ public class TreeUtils {
 
     public static void main(String[] args) {
 
-        final int addCount = 30;
+        /*
+        随机添加测试用例：
         AvlTree avlTree = new AvlTree();
+        final int addCount = 30;
         ArrayList<Integer> srcList = new ArrayList<>();
         do {
             for (int i = 0; i < addCount; i++) {
@@ -463,18 +465,51 @@ public class TreeUtils {
         System.out.println("Is Avl-Tree: " + TreeUtils.isAvlTree(avlTree.root));
         System.out.println(srcList);
         System.out.println(TreeUtils.midTraversal(avlTree.root));
-//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-//        System.out.println("-4: " + avlTree.del(-4));
-//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-//        System.out.println("0: " + avlTree.del(0));
-//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-//        System.out.println("-1: " + avlTree.del(-1));
-//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-//        System.out.println("3: " + avlTree.del(3));
-//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-//        System.out.println("2: " + avlTree.del(2));
-//        System.out.print(TreeUtils.resolvingAvlTree(avlTree.root));
-//        System.out.println("Size: " + avlTree.size());
+         */
+
+        /*
+        AVL树添加节点方法测试用例：
+        修改前失败：
+        [-8, 6, 0, -5, -7, 5, 2, -6, -4, 4, 1, -3, 3]
+        [-4, -3, 4, -2, 6, -1, 1, -5, 5, 3, 0, -6, 2, -8, 7]
+        [0, 1, -8, -4, 4, 3, -3, 2, 6, -6, -2, 7, -1, -7, -5]
+        [-6, -3, -4, 2, -2, 5, 1, -5, -8, 6, 0, 3, 4, -7]
+        [4, -2, -8, 5, 3, -7, 6, 2, -3, -1, 0, -6, -5]
+        修改前成功：
+        [4, 3, -4, 1, -7, -5, 0, -2, 2, 5, -3, -6, 7]
+        [-7, 1, 6, -5, -1, -4, 7, -2, 4, 0, 5, -3, -6]
+        有序：
+        [-7, -6, -5, -4, -3, -2, 0, 1, 2, 3, 4, 5, 7]
+        [-7, -6, -5, -4, -3, -2, -1, 0, 1, 4, 5, 6, 7]
+         */
+        int[][] samples = {
+                {-8, 6, 0, -5, -7, 5, 2, -6, -4, 4, 1, -3, 3},
+                {-4, -3, 4, -2, 6, -1, 1, -5, 5, 3, 0, -6, 2, -8, 7},
+                {0, 1, -8, -4, 4, 3, -3, 2, 6, -6, -2, 7, -1, -7, -5},
+                {-6, -3, -4, 2, -2, 5, 1, -5, -8, 6, 0, 3, 4, -7},
+                {4, -2, -8, 5, 3, -7, 6, 2, -3, -1, 0, -6, -5},
+                {4, 3, -4, 1, -7, -5, 0, -2, 2, 5, -3, -6, 7},
+                {-7, 1, 6, -5, -1, -4, 7, -2, 4, 0, 5, -3, -6},
+                {-7, -6, -5, -4, -3, -2, 0, 1, 2, 3, 4, 5, 7},
+                {-7, -6, -5, -4, -3, -2, -1, 0, 1, 4, 5, 6, 7}
+        };
+        AvlTree avlTree;
+        for (int[] sample : samples) {
+            avlTree = new AvlTree();
+            for (int i : sample) {
+                avlTree.add(i);
+            }
+            System.out.println("Is Avl-Tree: " + TreeUtils.isAvlTree(avlTree.root));
+            System.out.println(TreeUtils.resolving(avlTree.root));
+        }
+
+        avlTree = new AvlTree();
+        for (int i = 0; i < samples[8].length; i++) {
+            avlTree.add(samples[8][i]);
+            System.out.print(TreeUtils.resolving(avlTree.root));
+            System.out.println("------(" + avlTree.size() + ").[" + samples[8][i] + "]-----------------------------------------------------------------------");
+        }
+        System.out.println("Is Avl-Tree: " + TreeUtils.isAvlTree(avlTree.root));
 
     }
 
